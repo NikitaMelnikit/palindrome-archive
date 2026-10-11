@@ -188,15 +188,19 @@ docs/images/         README screenshots
 
 ## Quality
 
-Measured, not claimed — locally against the production build (`npm run build && npm run start`) with Lighthouse 13:
+Measured, not claimed — Lighthouse 13 against the live site on Vercel (11 Oct 2026):
 
-| Profile                          | Performance | Accessibility | Best practices | SEO |
-| -------------------------------- | :---------: | :-----------: | :------------: | :-: |
-| Desktop · home                   |     100     |      100      |      100       | 100 |
-| Mobile (slow 4G) · inner pages   |    89–92    |      100      |      100       | 100 |
-| Mobile (slow 4G) · home          |     ≈77     |      100      |      100       | 100 |
+| Page                        | Profile                  | Performance | Accessibility | Best practices | SEO |
+| --------------------------- | ------------------------ | :---------: | :-----------: | :------------: | :-: |
+| Home                        | desktop                  |     100     |      100      |      100       | 100 |
+| Home                        | mobile, simulated slow 4G |     78      |      100      |      100       | 100 |
+| Archive                     | mobile, simulated slow 4G |     91      |      100      |      100       | 100 |
+| Timelines                   | mobile, simulated slow 4G |     89      |      100      |      100       | 100 |
+| Record · Varnholm (3 runs)  | mobile, simulated slow 4G |   68 – 93   |      100      |      100       | 100 |
 
-Cumulative Layout Shift is 0 on every page. The cabinet scores lower on SEO by design — it is `noindex`.
+Cumulative Layout Shift is 0 on every page and mobile LCP is 2.7–3.2 s. Mobile performance scores swing between
+runs because Total Blocking Time is measured on the auditing machine’s (throttled) CPU — the same record page scored
+93, 77 and 68. The cabinet scores lower on SEO by design: it is `noindex`.
 
 Also checked by hand in Chromium at 375–1440 px: keyboard navigation, focus management in dialogs, deep links,
 back / forward, storage recovery and the absence of horizontal overflow.
@@ -213,7 +217,8 @@ Set `NEXT_PUBLIC_SITE_URL` to override it, for example when hosting elsewhere.
 ## Known limitations
 
 - The cabinet is per browser (`localStorage`); there are no accounts and no sync.
-- Mobile Lighthouse performance on the homepage is limited mainly by framework JavaScript under simulated slow 4G.
+- Mobile Lighthouse performance is limited mainly by framework JavaScript (hydration) under simulated slow 4G and
+  a 4× CPU slowdown.
 - Screen-reader support was checked through the accessibility tree and automated audits, not with a physical screen
   reader. Safari and Firefox have not been tested by hand.
 
